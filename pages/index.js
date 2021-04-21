@@ -1,28 +1,23 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import All from "./components/all";
 import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
-import Fab from "@material-ui/core/Fab";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import Avatar from "@material-ui/core/Avatar";
-import MenuIcon from "@material-ui/icons/Menu";
-import AddIcon from "@material-ui/icons/Add";
-import SearchIcon from "@material-ui/icons/Search";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import { Box, Button, Container, Grid, Tooltip } from "@material-ui/core";
+import { Box, Button, Container, Grid } from "@material-ui/core";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
+import styles from "../styles/Home.module.css";
 
 const useStyles = makeStyles((theme) => ({
+  container: {
+    padding: 0,
+  },
   text: {
     padding: theme.spacing(2, 2, 0),
     width: "96%",
@@ -71,24 +66,24 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
   const classes = useStyles();
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
-        <title>Laszlo - Programador fullstack</title>
+        <title>Laszlo Programador FullStack</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
+      <main className={styles.container}>
         <Container className={classes.container}>
           <CssBaseline />
           <Paper square className={classes.paper}>
             <Grid container className={classes.root}>
               <Grid item xs={12} lg={9} style={{ padding: "2%" }}>
                 <Typography className={classes.text} variant="h4">
-                  László Caputo - Programador FullStack
+                  László Caputo Programador FullStack
                 </Typography>
                 <Typography className={classes.text} variant="h6">
-                  Barranquilla - Colombia
-                  <img src="colombia.svg" width="20em" />
+                  Barranquilla - Colombia &nbsp;
+                  <img src="colombia.svg" width="20em" height="13em" />
                   {/* <Flags.CO title="colombia" /> */}
                 </Typography>
                 <br />
@@ -97,9 +92,9 @@ export default function Home() {
                   variant="body1"
                   align="justify"
                   gutterBottom
-                  style={{ fontSize: "18px" }}
+                  style={{ fontSize: "1.1rem" }}
                 >
-                  Soy un profesional íntegro, capacitado para de analizar y
+                  Soy un profesional íntegro, capacitado para analizar y
                   desarrollar los requisitos solicitados por un cliente
                   vanguardista que requiera soluciones tecnológicas en forma de
                   web o aplicación movil totalmente adaptables, intuitivas y
@@ -114,17 +109,24 @@ export default function Home() {
                 <br />
                 <Box component="span" style={{ fontWeight: "bold" }}>
                   {" "}
-                  <Typography className={classes.text} variant="inherit">
-                    Habilidades
+                  <Typography
+                    className={classes.text}
+                    variant="inherit"
+                    style={{ fontSize: "17px" }}
+                  >
+                    Habilidades Backend
                   </Typography>
                   <Box
                     component="div"
                     m={2}
-                    style={{ display: "flex", justifyContent: "space-around" }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-around",
+                    }}
                   >
-                    <img src="django.png" width="100em" />
-                    <img src="spring.svg" width="100em" />
-                    <img src="next.svg" width="100em" />
+                    <img src="django.png" width="80em" height="80em" />
+                    <img src="spring.png" width="80em" height="80" />
+                    <img src="next.svg" width="80em" height="80" />
 
                     {/* <img src={AngularSvg} width="50em" /> */}
                   </Box>
@@ -132,10 +134,7 @@ export default function Home() {
               </Grid>
               <Grid item xs={12} lg={3}>
                 <List className={classes.list} style={{ padding: "4%" }}>
-                  <ListSubheader
-                    className={classes.subheader}
-                    style={{ fontWeight: "bold" }}
-                  >
+                  <ListSubheader className={classes.subheader}>
                     Certificaciones
                   </ListSubheader>
                   <hr className={classes.hr} />

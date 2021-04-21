@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+  # FRONTEND
+  nextjs:
+    container_name: nextjs-frontend
+    restart: always
+    environment:
+      VIRTUAL_HOST: elprogramador.co, www.elprogramador.co
+      LETSENCRYPT_HOST: www.elprogramador.co, elprogramador.co
+      LETSENCRYPT_EMAIL: programadorcaputo@gmail.com
+    build:
+      context: .
+      dockerfile: dockerfile
+      args:
+        PROJECT_NAME: "Laszlo Programador FullStack"
+    image: nodejs-w-express
+    networks:
+      - app-network
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/
+
+    nginx-proxy:
+        image: jwilder/nginx-proxy
+        container_name: nginx-proxy
+        restart: always
+        ports:
+          - "80:80"
+          - "443:443"
+        volumes:
+          - ./proxy/conf:/etc/nginx/conf.d
+          - ./proxy/vhost:/etc/nginx/vhost.d
+          - ./proxy/html:/usr/share/nginx/html
+          - ./proxy/dhparam:/etc/nginx/dhparam
+          - ./proxy/certs:/etc/nginx/certs:ro
+          - /var/run/docker.sock:/tmp/docker.sock:ro
+        networks:
+          - app-network
+      letsencrypt:
+        image: jrcs/letsencrypt-nginx-proxy-companion
+        container_name: letsencrypt
+        volumes_from:
+          - nginx-proxy:rw
+        volumes:
+          - ./proxy/certs:/etc/nginx/certs:rw
+          - ./proxy/acme:/etc/acme.sh
+          - /var/run/docker.sock:/var/run/docker.sock:ro
+        networks:
+          - app-network
+    # NETWORKS
+    networks:
+      app-network:
+        driver: bridge

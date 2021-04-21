@@ -10,9 +10,60 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import Avatar from "@material-ui/core/Avatar";
-import { Box, Button, Container, Grid } from "@material-ui/core";
+import { Box, Button, Chip, Container, Grid } from "@material-ui/core";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import styles from "../styles/Home.module.css";
+
+const data = {
+  title: "László Caputo Programador FullStack",
+  location: "Barranquilla - Colombia",
+  flag: "colombia.svg",
+  resume: `
+  Soy un profesional íntegro, capacitado para analizar y
+  desarrollar los requisitos solicitados por un cliente
+  vanguardista que requiera soluciones tecnológicas en forma de
+  web o aplicación movil totalmente adaptables, intuitivas y
+  seguras.
+  Me caracterizo por ser una persona autodidacta, apasionada por
+  lo que hago, comprometido, servicial y responsable; Me gusta
+  solucionar problemas relacionados con sistemas tecnológicos.`,
+  habilities: "",
+  certificates: [
+    {
+      title: "Sql - MySql",
+      year: "2017",
+      picture: "sql.webp",
+      pdf: "diploma-sql.pdf",
+    },
+    {
+      title: "Administración de Servidores Linux",
+      year: "2017",
+      picture: "linux.webp",
+      pdf: "diploma-linux.pdf",
+    },
+    {
+      title: "Seguridad Informática para Empresas",
+      year: "2018",
+      picture: "seguridad.webp",
+      pdf: "diploma-seguridad-informatica.pdf",
+    },
+    {
+      title: "Python | Django",
+      year: "2018 - 2019",
+      picture: "python.webp",
+      pdf: "diploma-python.pdf",
+    },
+    {
+      title: "Angular",
+      year: "2018",
+      picture: "angular.webp",
+      pdf: "",
+    },
+  ],
+  udemy: "https://www.udemy.com/user/laszlo-caputo-adam/",
+  platzi: "https://platzi.com/p/Laszlo_Caputo/",
+  github: "https://github.com/lcaputo/",
+};
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -23,9 +74,7 @@ const useStyles = makeStyles((theme) => ({
     width: "96%",
   },
   paper: {},
-  list: {
-    marginBottom: theme.spacing(2),
-  },
+  list: {},
   subheader: {
     backgroundColor: theme.palette.background.paper,
   },
@@ -61,10 +110,26 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 65px",
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
   },
+  modal: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "1px solid #363636",
+    boxshadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    textAlign: "center",
+  },
+  inputMaterial: {
+    width: "100%",
+  },
 }));
 
 export default function Home() {
   const classes = useStyles();
+
   return (
     <div>
       <Head>
@@ -79,14 +144,12 @@ export default function Home() {
             <Grid container className={classes.root}>
               <Grid item xs={12} lg={9} style={{ padding: "2%" }}>
                 <Typography className={classes.text} variant="h4">
-                  László Caputo Programador FullStack
+                  {data.title}
                 </Typography>
                 <Typography className={classes.text} variant="h6">
-                  Barranquilla - Colombia &nbsp;
-                  <img src="colombia.svg" width="20em" height="13em" />
-                  {/* <Flags.CO title="colombia" /> */}
+                  {data.location} &nbsp;
+                  <img src={data.flag} width="20em" height="13em" />
                 </Typography>
-                <br />
                 <Typography
                   className={classes.text}
                   variant="body1"
@@ -94,19 +157,22 @@ export default function Home() {
                   gutterBottom
                   style={{ fontSize: "1.1rem" }}
                 >
-                  Soy un profesional íntegro, capacitado para analizar y
-                  desarrollar los requisitos solicitados por un cliente
-                  vanguardista que requiera soluciones tecnológicas en forma de
-                  web o aplicación movil totalmente adaptables, intuitivas y
-                  seguras.
-                  <br />
-                  <br />
-                  Me caracterizo por ser una persona autodidacta, apasionada por
-                  lo que hago, comprometido, servicial y responsable; Me gusta
-                  solucionar problemas relacionados con sistemas tecnológicos.
+                  {data.resume.split(".").map((elm, index) => {
+                    return (
+                      <>
+                        {elm.length >= index ? (
+                          <>
+                            {elm}
+                            <br />
+                            <br />
+                          </>
+                        ) : (
+                          <>{elm}</>
+                        )}
+                      </>
+                    );
+                  })}
                 </Typography>
-                <br />
-                <br />
                 <Box component="span" style={{ fontWeight: "bold" }}>
                   {" "}
                   <Typography
@@ -114,7 +180,7 @@ export default function Home() {
                     variant="inherit"
                     style={{ fontSize: "17px" }}
                   >
-                    Habilidades Backend
+                    Habilidades
                   </Typography>
                   <Box
                     component="div"
@@ -125,86 +191,91 @@ export default function Home() {
                     }}
                   >
                     <img src="django.png" width="80em" height="80em" />
-                    <img src="spring.png" width="80em" height="80" />
-                    <img src="next.svg" width="80em" height="80" />
+                    <img src="next.svg" width="80em" height="80em" />
+                    <img src="docker.png" width="80em" height="80em" />
+
+                    {/* <img src={AngularSvg} width="50em" /> */}
+                  </Box>
+                  <Box
+                    component="div"
+                    m={2}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-around",
+                    }}
+                  >
+                    <img src="react-native.png" width="80em" height="80em" />
+                    <img src="aws.png" width="80em" height="80em" />
+                    <img src="postgres.png" width="80em" height="80em" />
 
                     {/* <img src={AngularSvg} width="50em" /> */}
                   </Box>
                 </Box>
               </Grid>
               <Grid item xs={12} lg={3}>
-                <List className={classes.list} style={{ padding: "4%" }}>
-                  <ListSubheader className={classes.subheader}>
+                <List className={classes.list} style={{ padding: "6%" }}>
+                  <ListSubheader
+                    className={classes.subheader}
+                    style={{ fontWeight: "bold" }}
+                  >
                     Certificaciones
                   </ListSubheader>
                   <hr className={classes.hr} />
                   <>
-                    <ListItem button>
-                      <ListItemAvatar>
-                        <Avatar
-                          alt="certificado adminsitracion de servidores linux"
-                          src="linux.webp"
-                        />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={"Administración de Servidores Linux"}
-                        secondary={"2017"}
+                    {data.certificates.map((elm, index) => {
+                      return (
+                        <ListItem button>
+                          <ListItemAvatar>
+                            <Avatar
+                              alt={"certificado " + elm.title}
+                              src={elm.picture}
+                            />
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={elm.title}
+                            secondary={elm.year}
+                          />
+                        </ListItem>
+                      );
+                    })}
+                    <ListSubheader
+                      className={classes.subheader}
+                      style={{ fontWeight: "bold" }}
+                    >
+                      Social
+                    </ListSubheader>
+                    <hr />
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-around",
+                      }}
+                    >
+                      <Chip
+                        avatar={<Avatar alt="Udemy" src="udemy.svg" />}
+                        label="Udemy"
+                        component="a"
+                        target="_blank"
+                        href={data.udemy}
+                        clickable
                       />
-                    </ListItem>
-                    <ListItem button>
-                      <ListItemAvatar>
-                        <Avatar alt="Certificado Sql y Mysql" src="sql.webp" />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={"Curso de Sql y Mysql"}
-                        secondary={"2017"}
+                      <Chip
+                        avatar={<Avatar alt="Platzi" src="platzi.png" />}
+                        label="Platzi"
+                        component="a"
+                        target="_blank"
+                        href={data.platzi}
+                        clickable
                       />
-                    </ListItem>
-                    <ListItem button>
-                      <ListItemAvatar>
-                        <Avatar alt="Certificado Angular" src="angular.webp" />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={"Curso de Angular"}
-                        secondary={"2018"}
+                      <Chip
+                        avatar={<Avatar alt="GitHub" src="github.svg" />}
+                        label="GitHub"
+                        component="a"
+                        target="_blank"
+                        href={data.github}
+                        clickable
                       />
-                    </ListItem>
-                    <ListItem button>
-                      <ListItemAvatar>
-                        <Avatar
-                          alt="Certificado en Seguridad Informatica"
-                          src="seguridad.webp"
-                        />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={"Seguridad Informática para Empresas"}
-                        secondary={"2018"}
-                      />
-                    </ListItem>
-                    <ListItem button>
-                      <ListItemAvatar>
-                        <Avatar
-                          alt="Certificacion en Python y Django"
-                          src="python.webp"
-                        />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={"Cursos Python y Django"}
-                        secondary={"2018 - 2019"}
-                      />
-                    </ListItem>
-                    <ListItem button>
-                      <ListItemAvatar>
-                        <Avatar
-                          alt="Certificacion en Python y Django"
-                          src="react.webp"
-                        />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={"React | Gatsby - Nextjs"}
-                        secondary={"2020 - 2021"}
-                      />
-                    </ListItem>
+                    </div>
                   </>
                 </List>
               </Grid>

@@ -5,10 +5,13 @@ RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 
+RUN apt update && apt install -y gnupg2
+RUN apt isntall -y curl
+
 # INSTALL YARN
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-RUN sudo apt update && sudo apt install yarn
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt update && apt install yarn
 
 
 COPY package*.json ./

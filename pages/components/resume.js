@@ -19,7 +19,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import { createRef, useState } from "react";
+import { createRef, useRef, useState } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import useToastContext from "../contexts/ToastContext";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -142,7 +142,8 @@ export default function Resume() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const recaptchaRef = createRef();
+  const recaptchaRef = useRef(null);
+  const [validCaptcha, setValidCaptcha] = useState(false);
 
   const [contactModalIsOpen, setContactModalIsOpen] = useState(false);
   const toggleContactModal = () => {
@@ -152,7 +153,8 @@ export default function Resume() {
   const [contactFormData, setContactFormData] = useState({
     fullname: "",
     email: "",
-    body: "",
+    subject: "",
+    text: "",
     datetime: "",
   });
 
@@ -176,6 +178,8 @@ export default function Resume() {
       <br />
       <TextField
         name="email"
+        type="email"
+        requied
         className={classes.inputMaterial}
         label="Email"
         onChange={handleContactFormChange}
@@ -183,7 +187,17 @@ export default function Resume() {
       <br />
       <br />
       <TextField
-        name="body"
+        name="subject"
+        type="text"
+        requied
+        className={classes.inputMaterial}
+        label="Asunto"
+        onChange={handleContactFormChange}
+      />
+      <br />
+      <br />
+      <TextField
+        name="text"
         className={classes.inputMaterial}
         label="Mensaje"
         multiline
@@ -193,44 +207,39 @@ export default function Resume() {
     </>
   );
 
-  const onReCAPTCHAChange = (captchaCode) => {
-    console.log("Captcha value:", captchaCode);
-    // If the reCAPTCHA code is null or undefined indicating that
-    // the reCAPTCHA was expired then return early
-    if (!captchaCode) {
+  const onReCAPTCHAChange = (captchaValue) => {
+    if (captchaValue) {
+      setValidCaptcha(true);
       return;
     }
-    // Else reCAPTCHA was executed successfully so proceed with the
-    // alert
-    alert("Error");
-    // Reset the reCAPTCHA so that it can be executed again if user
-    // submits another email.
-    recaptchaRef.current.reset();
+    setValidCaptcha(false);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    recaptchaRef.current.execute();
-    async () => {
+    console.log(validCaptcha);
+    if (validCaptcha) {
       setIsLoading(true);
-      await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(contactFormData),
-      })
-        .then(() => {
+      try {
+        fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(contactFormData),
+        }).then(() => {
+          setValidCaptcha(false);
           setContactModalIsOpen(false);
           addSuccessToast("Email enviado con exito!");
-        })
-        .then(() => {
-          addErrorToast("Error.");
         });
-      await sleep(500);
+      } catch (e) {
+        console.log(e);
+      }
       setIsLoading(false);
-    };
+    } else {
+      addErrorToast("Completa todos los campos");
+    }
   };
 
   function sleep(ms) {
@@ -420,7 +429,7 @@ export default function Resume() {
           <br />
           <div style={{ display: "flex", justifyContent: "center" }}>
             <ReCAPTCHA
-              /*               ref={recaptchaRef}
+              /*ref={recaptchaRef}
               size="invisible" */
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
               onChange={onReCAPTCHAChange}

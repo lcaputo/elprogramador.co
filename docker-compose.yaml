@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       VIRTUAL_HOST: elprogramador.co, www.elprogramador.co
-      LETSENCRYPT_HOST: www.elprogramador.co, elprogramador.co
+      LETSENCRYPT_HOST: elprogramador.co
       LETSENCRYPT_EMAIL: programadorcaputo@gmail.com
     build:
       context: .

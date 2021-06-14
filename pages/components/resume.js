@@ -19,9 +19,10 @@ import {
   TextField,
 } from "@material-ui/core";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import { useState } from "react";
+import { createRef, useState } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import useToastContext from "../contexts/ToastContext";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const data = {
   title: "László Caputo Programador FullStack",
@@ -141,6 +142,8 @@ export default function Resume() {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const recaptchaRef = createRef();
+
   const [contactModalIsOpen, setContactModalIsOpen] = useState(false);
   const toggleContactModal = () => {
     setContactModalIsOpen(!contactModalIsOpen);
@@ -190,9 +193,50 @@ export default function Resume() {
     </>
   );
 
+  const onReCAPTCHAChange = (captchaCode) => {
+    console.log("Captcha value:", captchaCode);
+    // If the reCAPTCHA code is null or undefined indicating that
+    // the reCAPTCHA was expired then return early
+    if (!captchaCode) {
+      return;
+    }
+    // Else reCAPTCHA was executed successfully so proceed with the
+    // alert
+    alert("Error");
+    // Reset the reCAPTCHA so that it can be executed again if user
+    // submits another email.
+    recaptchaRef.current.reset();
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    recaptchaRef.current.execute();
+    async () => {
+      setIsLoading(true);
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(contactFormData),
+      })
+        .then(() => {
+          setContactModalIsOpen(false);
+          addSuccessToast("Email enviado con exito!");
+        })
+        .then(() => {
+          addErrorToast("Error.");
+        });
+      await sleep(500);
+      setIsLoading(false);
+    };
+  };
+
   function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
+
   const { addSuccessToast, addErrorToast } = useToastContext();
 
   return (
@@ -374,6 +418,14 @@ export default function Resume() {
           )}
           <br />
           <br />
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <ReCAPTCHA
+              /*               ref={recaptchaRef}
+              size="invisible" */
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onChange={onReCAPTCHAChange}
+            />
+          </div>
           <br />
           <div align="right">
             <Button
@@ -389,13 +441,7 @@ export default function Resume() {
               variant="contained"
               color="primary"
               disabled={isLoading}
-              onClick={async () => {
-                setIsLoading(true);
-                await sleep(2000);
-                setContactModalIsOpen(false);
-                addSuccessToast("Email enviado con exito!");
-                setIsLoading(false);
-              }}
+              onClick={handleSubmit}
             >
               Enviar
             </Button>

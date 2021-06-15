@@ -429,8 +429,6 @@ export default function Resume() {
           <br />
           <div style={{ display: "flex", justifyContent: "center" }}>
             <ReCAPTCHA
-              /*ref={recaptchaRef}
-              size="invisible" */
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
               onChange={onReCAPTCHAChange}
             />

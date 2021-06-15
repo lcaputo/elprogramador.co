@@ -147,6 +147,7 @@ export default function Resume() {
 
   const [contactModalIsOpen, setContactModalIsOpen] = useState(false);
   const toggleContactModal = () => {
+    console.log(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY);
     setContactModalIsOpen(!contactModalIsOpen);
   };
 

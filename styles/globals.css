@@ -14,3 +14,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+li.MuiListSubheader-root.makeStyles-subheader-5.MuiListSubheader-sticky.MuiListSubheader-gutters {
+  line-height: 42px !important;
+}

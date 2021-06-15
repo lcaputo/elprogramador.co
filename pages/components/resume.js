@@ -25,7 +25,8 @@ import useToastContext from "../contexts/ToastContext";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const data = {
-  title: "László Caputo Programador FullStack",
+  title: "László Caputo",
+  subtitle: "Técnico en Desarrollo de Software",
   location: "Barranquilla - Colombia",
   flag: "colombia.svg",
   resume: `
@@ -33,10 +34,10 @@ const data = {
   desarrollar los requisitos solicitados por un cliente
   vanguardista que requiera soluciones tecnológicas en forma de
   web o aplicación movil totalmente adaptables, intuitivas y
-  seguras, poseo más de 4 años de experiencia desarrollando software. <br />
+  seguras, poseo más de 4 años de experiencia programando. <br />
   Me caracterizo por ser una persona autodidacta, apasionada por
   lo que hago, comprometido, servicial y responsable; Me gusta
-  solucionar problemas relacionados con sistemas tecnológicos. <br />`,
+  solucionar problemas. <br />`,
   habilities: "",
   certificates: [
     {
@@ -205,10 +206,18 @@ export default function Resume() {
         rows={3}
         onChange={handleContactFormChange}
       />
+      <br />
+      <br />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <ReCAPTCHA
+          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+          onChange={onReCAPTCHAChange}
+        />
+      </div>
     </>
   );
 
-  const onReCAPTCHAChange = (captchaValue) => {
+  const onReCAPTCHAChange = async (captchaValue) => {
     if (captchaValue) {
       setValidCaptcha(true);
       return;
@@ -216,11 +225,11 @@ export default function Resume() {
     setValidCaptcha(false);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     console.log(validCaptcha);
     if (validCaptcha) {
-      setIsLoading(true);
       try {
         fetch("/api/contact", {
           method: "POST",
@@ -237,10 +246,11 @@ export default function Resume() {
       } catch (e) {
         console.log(e);
       }
-      setIsLoading(false);
     } else {
       addErrorToast("Completa todos los campos");
     }
+    await sleep(2000);
+    setIsLoading(false);
   };
 
   function sleep(ms) {
@@ -255,9 +265,9 @@ export default function Resume() {
         <CssBaseline />
         <Paper square className={classes.paper}>
           <Grid container className={classes.root}>
-            <Grid item xs={12} lg={9} style={{ padding: "2%" }}>
+            <Grid item xs={12} md={9} style={{ padding: "2%" }}>
               <Typography className={classes.text} variant="h4">
-                {data.title}
+                {data.title} - {data.subtitle}
               </Typography>
               <Typography className={classes.text} variant="h6">
                 {data.location} &nbsp;
@@ -324,8 +334,8 @@ export default function Resume() {
                 </Box>
               </Box>
             </Grid>
-            <Grid item xs={12} lg={3}>
-              <List className={classes.list} style={{ padding: "6%" }}>
+            <Grid item xs={12} md={3}>
+              <List className={classes.list} style={{ padding: "4%" }}>
                 <ListSubheader
                   className={classes.subheader}
                   style={{ fontWeight: "bold" }}
@@ -426,16 +436,7 @@ export default function Resume() {
           ) : (
             <>{bodyContact}</>
           )}
-          <br />
-          <br />
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <ReCAPTCHA
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-              onChange={onReCAPTCHAChange}
-            />
-          </div>
-          <br />
-          <div align="right">
+          <div align="right" style={{ marginTop: "5%" }}>
             <Button
               variant="contained"
               color="secondary"

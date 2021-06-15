@@ -6,7 +6,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 RUN apt update && apt install -y gnupg2
-RUN apt isntall -y curl
+RUN apt install -y curl
 
 # INSTALL YARN
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -

@@ -1,6 +1,12 @@
 module.exports = {
   distDir: "build",
-  env: {},
+  env: {
+    CONTACT_SENDER_EMAIL = process.env.CONTACT_SENDER_EMAIL,
+    CONTACT_SENDER_PASSWORD = process.env.CONTACT_SENDER_PASSWORD,
+    CONTACT_EMAIL = process.env.CONTACT_EMAIL,
+    NEXT_PUBLIC_RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+    RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY,
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.node = {

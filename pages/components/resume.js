@@ -123,12 +123,12 @@ const useStyles = makeStyles((theme) => ({
   },
   modal: {
     position: "absolute",
-    width: 400,
+    width: "60vh",
     backgroundColor: theme.palette.background.paper,
     border: "1px solid #363636",
     boxshadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
-    top: "50%",
+    top: "48%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     textAlign: "center",
@@ -203,7 +203,7 @@ export default function Resume() {
         className={classes.inputMaterial}
         label="Mensaje"
         multiline
-        rows={3}
+        rows={4}
         onChange={handleContactFormChange}
       />
       <br />
@@ -265,7 +265,7 @@ export default function Resume() {
         <CssBaseline />
         <Paper square className={classes.paper}>
           <Grid container className={classes.root}>
-            <Grid item xs={12} md={9} style={{ padding: "2%" }}>
+            <Grid item xs={12} md={9} style={{ padding: "0% 2%" }}>
               <Typography className={classes.text} variant="h4">
                 {data.title} - {data.subtitle}
               </Typography>

@@ -34,7 +34,7 @@ const data = {
   desarrollar los requisitos solicitados por un cliente
   vanguardista que requiera soluciones tecnológicas en forma de
   web o aplicación movil totalmente adaptables, intuitivas y
-  seguras, poseo más de 4 años de experiencia programando. <br />
+  seguras, poseo 3 años de experiencia programando. <br />
   Me caracterizo por ser una persona autodidacta, apasionada por
   lo que hago, comprometido, servicial y responsable; Me gusta
   solucionar problemas. <br />`,

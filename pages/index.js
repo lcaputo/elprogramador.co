@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Laszlo Programador FullStack</title>
+        <title>Laszlo Caputo Programador FullStack</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ToastWrapper>

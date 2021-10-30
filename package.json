@@ -1,11 +1,12 @@
 {
-  "name": "laszlo-programador-fullstack",
+  "name": "laszlo-caputo-programador-fullstack",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
@@ -17,7 +18,9 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-google-recaptcha": "^2.1.0",
-    "react-toastify": "^7.0.3",
-    "sitemap": "^7.0.0"
+    "react-toastify": "^7.0.3"
+  },
+  "devDependencies": {
+    "next-sitemap": "^1.6.192"
   }
 }

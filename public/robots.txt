@@ -1,4 +1,9 @@
+# *
 User-agent: *
 Allow: /
 
-Sitemap: https://elprogramador.co/api/sitemap
+# Host
+Host: https://elprogramador.co
+
+# Sitemaps
+Sitemap: https://elprogramador.co/sitemap.xml

@@ -2,7 +2,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastWrapper } from "./contexts/ToastContext";
-import Resume from "./components/resume";
+import Resume from "./components/Curriculum";
 
 export default function Home() {
   return (

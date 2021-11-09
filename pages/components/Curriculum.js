@@ -15,14 +15,11 @@ import {
   Chip,
   Container,
   Grid,
-  Modal,
-  TextField,
 } from "@material-ui/core";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import { createRef, useRef, useState } from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import useToastContext from "../contexts/ToastContext";
-import ReCAPTCHA from "react-google-recaptcha";
+import { useState } from "react";
+import CustomModal from './Modal'
+import Formulario from "./formulario";
 
 const data = {
   title: "László Caputo",
@@ -121,143 +118,14 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 65px",
     boxShadow: "0 3px 5px 2px rgba(0, 150, 150, .25)",
   },
-  modal: {
-    position: "absolute",
-    width: "60vh",
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid #363636",
-    boxshadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    top: "48%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    textAlign: "center",
-  },
-  inputMaterial: {
-    width: "100%",
-  },
 }));
 
 export default function Resume() {
   const classes = useStyles();
+  
+  const [modalVisible, setModalVisible] = useState(false)
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  const recaptchaRef = useRef(null);
-  const [validCaptcha, setValidCaptcha] = useState(false);
-
-  const [contactModalIsOpen, setContactModalIsOpen] = useState(false);
-  const toggleContactModal = () => {
-    console.log(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY);
-    setContactModalIsOpen(!contactModalIsOpen);
-  };
-
-  const [contactFormData, setContactFormData] = useState({
-    fullname: "",
-    email: "",
-    subject: "",
-    text: "",
-    datetime: "",
-  });
-
-  const handleContactFormChange = (e) => {
-    const { name, value } = e.target;
-    setContactFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const bodyContact = (
-    <>
-      <TextField
-        name="fullname"
-        className={classes.inputMaterial}
-        label="Nombre y Apellido"
-        onChange={handleContactFormChange}
-      />
-      <br />
-      <br />
-      <TextField
-        name="email"
-        type="email"
-        requied
-        className={classes.inputMaterial}
-        label="Email"
-        onChange={handleContactFormChange}
-      />
-      <br />
-      <br />
-      <TextField
-        name="subject"
-        type="text"
-        requied
-        className={classes.inputMaterial}
-        label="Asunto"
-        onChange={handleContactFormChange}
-      />
-      <br />
-      <br />
-      <TextField
-        name="text"
-        className={classes.inputMaterial}
-        label="Mensaje"
-        multiline
-        rows={4}
-        onChange={handleContactFormChange}
-      />
-      <br />
-      <br />
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <ReCAPTCHA
-          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-          onChange={onReCAPTCHAChange}
-        />
-      </div>
-    </>
-  );
-
-  const onReCAPTCHAChange = async (captchaValue) => {
-    if (captchaValue) {
-      setValidCaptcha(true);
-      return;
-    }
-    setValidCaptcha(false);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setIsLoading(true);
-    console.log(validCaptcha);
-    if (validCaptcha) {
-      try {
-        fetch("/api/contact", {
-          method: "POST",
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(contactFormData),
-        }).then(() => {
-          setValidCaptcha(false);
-          setContactModalIsOpen(false);
-          addSuccessToast("Email enviado con exito!");
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    } else {
-      addErrorToast("Completa todos los campos");
-    }
-    await sleep(2000);
-    setIsLoading(false);
-  };
-
-  function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  const { addSuccessToast, addErrorToast } = useToastContext();
+  const toggleContactModal = () => {setModalVisible(!modalVisible);console.log(modalVisible)}
 
   return (
     <div>
@@ -421,42 +289,15 @@ export default function Resume() {
           </Button>
         </Toolbar>
       </Container>
-      <Modal
-        disableBackdropClick
-        open={contactModalIsOpen}
-        onClose={toggleContactModal}
-      >
-        <div className={classes.modal}>
-          <h3>Formulario de Contacto</h3>
-          {isLoading ? (
-            <>
-              <br />
-              <CircularProgress color="primary" />
-            </>
-          ) : (
-            <>{bodyContact}</>
-          )}
-          <div align="right" style={{ marginTop: "5%" }}>
-            <Button
-              variant="contained"
-              color="secondary"
-              disabled={isLoading}
-              onClick={toggleContactModal}
-            >
-              Cancelar
-            </Button>
-            &nbsp;
-            <Button
-              variant="contained"
-              color="primary"
-              disabled={isLoading}
-              onClick={handleSubmit}
-            >
-              Enviar
-            </Button>
-          </div>
-        </div>
-      </Modal>
+
+      {modalVisible && 
+        <CustomModal isOpen={modalVisible} 
+        toggle={toggleContactModal} disableBackdropClick={true} >
+          
+          <Formulario toggle={toggleContactModal} />
+
+        </CustomModal>
+      }
     </div>
   );
 }
